@@ -7,5 +7,5 @@ if PYTHON_3:
     string_types = (str, )  # pragma: no cover
     text_type = str  # pragma: no cover
 else:
-    string_types = (basestring, )  # noqa
-    text_type = unicode  # noqa
+    string_types = (str, )  # noqa
+    text_type = str  # noqa

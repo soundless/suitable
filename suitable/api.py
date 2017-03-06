@@ -103,7 +103,7 @@ class Api(object):
 
         """
         if isinstance(servers, string_types):
-            self.servers = servers.split(u' ')
+            self.servers = servers.split(' ')
         else:
             self.servers = list(servers)
 
@@ -266,7 +266,7 @@ def options_as_class(dictionary):
 
     options = Options()
 
-    for key, value in dictionary.items():
+    for key, value in list(dictionary.items()):
         setattr(options, key, value)
 
     return options

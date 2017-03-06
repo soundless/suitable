@@ -34,7 +34,7 @@ class PyTest(Command):
 setup(
     name='suitable',
     version='0.7.4',
-    url='http://github.com/seantis/suitable/',
+    url='http://github.com/soundless/suitable/',
     license='GPLv3',
     author='Denis Krienbühl',
     author_email='denis@href.ch',

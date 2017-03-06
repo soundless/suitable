@@ -63,12 +63,12 @@ class ModuleRunner(object):
     def get_module_args(self, args, kwargs):
         # escape equality sign, until this is fixed:
         # https://github.com/ansible/ansible/issues/13862
-        args = u' '.join(args).replace('=', '\\=')
+        args = ' '.join(args).replace('=', '\\=')
 
-        kwargs = u' '.join(u'{}="{}"'.format(
-            k, v.replace('"', '\\"')) for k, v in kwargs.items())
+        kwargs = ' '.join('{}="{}"'.format(
+            k, v.replace('"', '\\"')) for k, v in list(kwargs.items()))
 
-        return u' '.join((args, kwargs)).strip()
+        return ' '.join((args, kwargs)).strip()
 
     def execute(self, *args, **kwargs):
         """ Puts args and kwargs in a way ansible can understand. Calls ansible
@@ -116,7 +116,7 @@ class ModuleRunner(object):
             loader=loader
         )
 
-        log.info(u'running {}'.format(u'- {module_name}: {module_args}'.format(
+        log.info('running {}'.format('- {module_name}: {module_args}'.format(
             module_name=self.module_name,
             module_args=module_args
         )))
@@ -139,13 +139,13 @@ class ModuleRunner(object):
             if task_queue_manager is not None:
                 task_queue_manager.cleanup()
 
-        log.info(u'took {} to complete'.format(datetime.utcnow() - start))
+        log.info('took {} to complete'.format(datetime.utcnow() - start))
 
         return self.evaluate_results(callback)
 
     def ignore_further_calls_to_server(self, server):
         """ Takes a server out of the list. """
-        log.error(u'ignoring further calls to {}'.format(server))
+        log.error('ignoring further calls to {}'.format(server))
         self.api.servers.remove(server)
 
     def trigger_event(self, server, method, args):
@@ -161,9 +161,9 @@ class ModuleRunner(object):
     def evaluate_results(self, callback):
         """ prepare the result of runner call for use with RunnerResults. """
 
-        for server, result in callback.unreachable.items():
-            log.error(u'{} could not be reached'.format(server))
-            log.debug(u'ansible-output =>\n{}'.format(pformat(result)))
+        for server, result in list(callback.unreachable.items()):
+            log.error('{} could not be reached'.format(server))
+            log.debug('ansible-output =>\n{}'.format(pformat(result)))
 
             if self.api.ignore_unreachable:
                 continue
@@ -172,7 +172,7 @@ class ModuleRunner(object):
                 self, server
             ))
 
-        for server, answer in callback.contacted.items():
+        for server, answer in list(callback.contacted.items()):
 
             success = answer['success']
             result = answer['result']
@@ -185,8 +185,8 @@ class ModuleRunner(object):
                     success = True
 
             if not success:
-                log.error(u'{} failed on {}'.format(self, server))
-                log.debug(u'ansible-output =>\n{}'.format(pformat(result)))
+                log.error('{} failed on {}'.format(self, server))
+                log.debug('ansible-output =>\n{}'.format(pformat(result)))
 
                 if self.api.ignore_errors:
                     continue
@@ -201,6 +201,6 @@ class ModuleRunner(object):
         return RunnerResults({
             'contacted': {
                 server: answer['result']
-                for server, answer in callback.contacted.items()
+                for server, answer in list(callback.contacted.items())
             }
         })
