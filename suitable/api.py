@@ -29,7 +29,7 @@ class Api(object):
     """
 
     def __init__(
-        self, servers,
+        self, servers='localhost',
         ignore_unreachable=False,
         ignore_errors=False,
         sudo=False,
