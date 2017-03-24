@@ -27,6 +27,6 @@ class RunnerResults(dict):
             raise KeyError("{} could not be contacted".format(server))
 
         if key not in self['contacted'].get(server, {}):
-            raise AttributeError
+            raise AttributeError("Attribute '{0}' not found for host '{1}'".format(key, server))
 
         return self['contacted'][server][key]

@@ -91,10 +91,11 @@ class ModuleRunner(object):
                 key, value = item.split('=', 1)
                 extra_vars_map[key] = value
 	    variable_manager.extra_vars = extra_vars_map
-        except AttributeError:
+        except AttributeError as ae:
+            log.info('AttributeError: {}'.format(ae))
             pass
         except Exception as e:
-           raise(e)
+           raise Exception(e)
 
         # Ansible has some support for host lists, but it assumes at times
         # that these host lists are not in fact lists but a string pointing
