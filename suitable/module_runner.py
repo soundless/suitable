@@ -82,20 +82,7 @@ class ModuleRunner(object):
 
         loader = DataLoader()
         variable_manager = VariableManager()
-
-        # take care of extra vars here if any
-        try:
-            extra_vars_str = getattr(self.api.options, 'extra_vars')
-            extra_vars_map = {}
-            for item in extra_vars_str.split():
-                key, value = item.split('=', 1)
-                extra_vars_map[key] = value
-	    variable_manager.extra_vars = extra_vars_map
-        except AttributeError as ae:
-            log.info('AttributeError: {}'.format(ae))
-            pass
-        except Exception as e:
-           raise Exception(e)
+        variable_manager.extra_vars = self.api.options.extra_vars
 
         # Ansible has some support for host lists, but it assumes at times
         # that these host lists are not in fact lists but a string pointing
